@@ -4,8 +4,6 @@
 /* Description: This file contains the functions for our space & board class */
 #include "ChessClasses.h"
 
-
-
 //default constructor for space
 Space::Space()
 {
@@ -49,6 +47,17 @@ void Space::setPieceAndColor(Piece p, Color c)
 //this function prints the board
 void Board::printBoard() {
 	using namespace std;
+	for (int  i = 0; i <7; i++)
+	{
+		if (spaces[i][7].getPiece() == PAWN && spaces[i][7].getColor()==WHITE)
+		{
+			spaces[i][7].setPieceAndColor(QUEEN, WHITE);
+		}
+		if (spaces[i][0].getPiece() == PAWN && spaces[i][0].getColor() == BLACK)
+		{
+			spaces[i][0].setPieceAndColor(QUEEN, BLACK);
+		}
+	}
 	//first we print the y axis guide
 	cout << "   y: 0  1  2  3  4  5  6  7 " << endl << "x:" << endl;
 
@@ -110,8 +119,6 @@ bool Board::Movepiece()
 		y2 = move[3] - 48;
 		if (getSpace(x1, y1)->getColor() == turn)
 		{
-
-
 			if (makeMove(x1, y1, x2, y2) == false)
 			{
 				cout << "Move is Invalid, try again." << endl;
@@ -412,9 +419,9 @@ bool Board::movePawn(Space* thisPawn, Space* thatSpace) {
 			else
 				return false;
 	}
-	else
-		if (thisPawn->getColor() == BLACK)
-		{
+	else if (thisPawn->getColor() == BLACK)
+	{
+
 			if (pawnX == thatX && thatY == pawnY - 1 && thatSpace->getColor() == NONE)
 			{
 				thatSpace->setSpace(thisPawn);
@@ -430,9 +437,11 @@ bool Board::movePawn(Space* thisPawn, Space* thatSpace) {
 				}
 				else
 					return false;
-		}
-		else
-			return false;
+	}
+	else
+	{
+		return false;
+	}	
 }
 //next this function handles the inputs. it passes in the xy cords
 bool Board::makeMove(int x1, int y1, int x2, int y2) {
@@ -440,7 +449,7 @@ bool Board::makeMove(int x1, int y1, int x2, int y2) {
 	//checks if the input is within the bounds of the board
 	if (x1 < 0 || x1>7 || y1 < 0 || y1>7 || x2 < 0 || x2>7 || y2 < 0 || y2>8)
 	{
-		std::cout << "One of your inputs was our of bounds" << std::endl;
+		std::cout << "One of your inputs was out of bounds" << std::endl;
 		return false;
 	}
 	//gets the source
